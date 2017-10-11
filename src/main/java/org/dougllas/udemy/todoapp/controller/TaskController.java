@@ -31,7 +31,7 @@ public class TaskController implements Serializable{
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Task> add(@RequestBody Task task){
         reporitory.save(task);
-        return new ResponseEntity<Task>(task, HttpStatus.OK);
+        return new ResponseEntity<Task>(task, HttpStatus.CREATED);
     }
 
     @ResponseBody
@@ -39,5 +39,16 @@ public class TaskController implements Serializable{
     public ResponseEntity<Integer> add(@RequestParam("id") Integer id){
         reporitory.delete(id);
         return new ResponseEntity<Integer>(id, HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.PUT)
+    public ResponseEntity update(@RequestParam("id") Integer id, @RequestBody Task task){
+        if(id == null){
+            return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
+        }
+        task.setId(id);
+        reporitory.save(task);
+        return new ResponseEntity(task, HttpStatus.OK);
     }
 }
